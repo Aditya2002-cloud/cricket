@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>Bat Ball Stump Game</h1>
+    <div>
+        <button class="choice" onclick="
+        
+     let comp= gen();
+        let res=usd('bat',comp);
+
+        result('bat',comp,res);
+        
+        "> <img src="bat.jpg" alt="bat image" class="choice-image"></button>
+        
+        
+        <button class="choice" onclick="
+           comp=gen();
+            res=usd('ball',comp);
+
+            result('ball',comp,res);
+        "> <img src="ball.jpg" alt="ball img" class="choice-image"></button>
+
+        <button class="choice"  onclick="
+                comp=gen();
+                res=usd('stump',comp);
+                result('stump',comp,res);
+        "> <img src="stump.jpg" alt="stump image" class="choice-image"></button>
+       
+
+    </div>
+    <div>
+      <h3 id="usermove"></h3>
+      <h3 id="compmove"></h3>
+      <h3 id="result"></h3>
+      <h3 id="score1"></h3>
+
+      <button
+      onclick="localStorage.clear()
+      resetscore();
+     
+      ">Reset</button>
+    </div>
+    <script>
+      let scorestr=localStorage.getItem('Score');
+      let score;
+      resetscore(scorestr);
+      function resetscore(scorestr)
+      {
+       score=scorestr ? JSON.parse(scorestr):{
+          win:0,
+        lost:0,
+        tie:0,
+        };
+      
+
+     score.display=function()
+        { return `won:${score.win},lost:${score.lost},tie:${score.tie}`;
+
+        };
+
+        result();
+      
+      } 
+  
+  function gen()
+  {
+
+  let randomno=Math.random()*3;
+        if(randomno>0 && randomno<=1)
+    { 
+        return 'bat';
+    }
+        else if(randomno>1 && randomno<=2)
+        {
+          return 'ball';
+        }
+        else
+        {
+         return 'stump';
+        }
+    }
+
+    function usd(usermove,compmove)
+    {
+        if(usermove==='bat')
+    {
+        if(compmove==='ball')  
+      {
+        score.win++;
+        return 'user won';
+      }
+      else if(compmove==='bat')
+      {
+        score.tie++;
+        return `it's a tie`;
+      }
+      else if(compmove==='stump')
+      {
+        score.lost++;
+        return `comp has won`;
+      }
+    }
+    else if(usermove==='ball')
+    {
+
+    
+
+    if(compmove==='bat')  
+      {
+        score.lost++;
+        return 'comp won';
+      }
+      else if(compmove==='ball')
+      { score.tie++;
+        return `it's a tie`;
+      }
+      else if(compmove==='stump')
+      {score.win++;
+        return `user has won`;
+      }
+    }
+    else if(usermove==='stump')
+    {
+        if(comp==='Ball')  
+      {score.lost++;
+        return'comp won';
+      }
+      else if(comp==='stump')
+      { score.tie++;
+        return `it's a tie`;
+      }
+      else if(comp==='bat')
+      {score.win++;
+        return `user has won`;
+      }
+    }
+
+}
+
+function result(usermove,comp,res)
+{
+    localStorage.setItem('Score',JSON.stringify(score));
+    document.querySelector('#usermove').innerText= usermove ?`you have chosen ${usermove}`:'';
+    document.querySelector('#compmove').innerText= comp? `you have chosen ${comp}`:'';
+    document.querySelector('#result').innerText= res?`you have chosen ${res}`:'';
+    document.querySelector('#score1').innerText=score.display();
+
+}
+    </script> 
+</body>
+</html>
